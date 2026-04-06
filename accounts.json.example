@@ -1,0 +1,17 @@
+[
+  {
+    "username": "user_one",
+    "password": "password_one",
+    "label": "Main App"
+  },
+  {
+    "username": "user_two",
+    "password": "password_two",
+    "label": "Portfolio Site"
+  },
+  {
+    "username": "user_three",
+    "password": "password_three",
+    "label": "API Backend"
+  }
+]

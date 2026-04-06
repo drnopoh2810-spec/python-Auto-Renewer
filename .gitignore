@@ -1,0 +1,24 @@
+# Credentials — NEVER commit
+.env
+accounts.json
+
+# Runtime outputs
+renewal.log
+renewal_report.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+venv/
+.venv/
+env/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db

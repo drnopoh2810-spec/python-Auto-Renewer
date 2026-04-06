@@ -1,0 +1,192 @@
+name: Auto-Renew PythonAnywhere (Multi-Account)
+
+on:
+  schedule:
+    - cron: '0 4 1,15 * *'
+  workflow_dispatch:
+
+jobs:
+  renew_and_keepalive:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        run: |
+          git clone --depth=50 https://github.com/${{ github.repository }}.git .
+          git checkout ${{ github.ref_name }}
+
+      - name: Setup Python
+        run: python3 --version
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install requests beautifulsoup4 python-dotenv
+
+      - name: Run renewal script
+        env:
+          # ─── حساب #1 ────────────────────
+          PA_USERNAME_1: ${{ secrets.PA_USERNAME_1 }}
+          PA_PASSWORD_1: ${{ secrets.PA_PASSWORD_1 }}
+          PA_LABEL_1:    ${{ secrets.PA_LABEL_1 }}
+
+          # ─── حساب #2 ────────────────────
+          PA_USERNAME_2: ${{ secrets.PA_USERNAME_2 }}
+          PA_PASSWORD_2: ${{ secrets.PA_PASSWORD_2 }}
+          PA_LABEL_2:    ${{ secrets.PA_LABEL_2 }}
+
+          # ─── حساب #3 ────────────────────
+          PA_USERNAME_3: ${{ secrets.PA_USERNAME_3 }}
+          PA_PASSWORD_3: ${{ secrets.PA_PASSWORD_3 }}
+          PA_LABEL_3:    ${{ secrets.PA_LABEL_3 }}
+
+          # ─── حساب #4 ────────────────────
+          PA_USERNAME_4: ${{ secrets.PA_USERNAME_4 }}
+          PA_PASSWORD_4: ${{ secrets.PA_PASSWORD_4 }}
+          PA_LABEL_4:    ${{ secrets.PA_LABEL_4 }}
+
+          # ─── حساب #5 ────────────────────
+          PA_USERNAME_5: ${{ secrets.PA_USERNAME_5 }}
+          PA_PASSWORD_5: ${{ secrets.PA_PASSWORD_5 }}
+          PA_LABEL_5:    ${{ secrets.PA_LABEL_5 }}
+
+          # ─── حساب #6 ────────────────────
+          PA_USERNAME_6: ${{ secrets.PA_USERNAME_6 }}
+          PA_PASSWORD_6: ${{ secrets.PA_PASSWORD_6 }}
+          PA_LABEL_6:    ${{ secrets.PA_LABEL_6 }}
+
+          # ─── حساب #7 ────────────────────
+          PA_USERNAME_7: ${{ secrets.PA_USERNAME_7 }}
+          PA_PASSWORD_7: ${{ secrets.PA_PASSWORD_7 }}
+          PA_LABEL_7:    ${{ secrets.PA_LABEL_7 }}
+
+          # ─── حساب #8 ────────────────────
+          PA_USERNAME_8: ${{ secrets.PA_USERNAME_8 }}
+          PA_PASSWORD_8: ${{ secrets.PA_PASSWORD_8 }}
+          PA_LABEL_8:    ${{ secrets.PA_LABEL_8 }}
+
+          # ─── حساب #9 ────────────────────
+          PA_USERNAME_9: ${{ secrets.PA_USERNAME_9 }}
+          PA_PASSWORD_9: ${{ secrets.PA_PASSWORD_9 }}
+          PA_LABEL_9:    ${{ secrets.PA_LABEL_9 }}
+
+          # ─── حساب #10 ────────────────────
+          PA_USERNAME_10: ${{ secrets.PA_USERNAME_10 }}
+          PA_PASSWORD_10: ${{ secrets.PA_PASSWORD_10 }}
+          PA_LABEL_10:    ${{ secrets.PA_LABEL_10 }}
+
+          # ─── حساب #11 ────────────────────
+          PA_USERNAME_11: ${{ secrets.PA_USERNAME_11 }}
+          PA_PASSWORD_11: ${{ secrets.PA_PASSWORD_11 }}
+          PA_LABEL_11:    ${{ secrets.PA_LABEL_11 }}
+
+          # ─── حساب #12 ────────────────────
+          PA_USERNAME_12: ${{ secrets.PA_USERNAME_12 }}
+          PA_PASSWORD_12: ${{ secrets.PA_PASSWORD_12 }}
+          PA_LABEL_12:    ${{ secrets.PA_LABEL_12 }}
+
+          # ─── حساب #13 ────────────────────
+          PA_USERNAME_13: ${{ secrets.PA_USERNAME_13 }}
+          PA_PASSWORD_13: ${{ secrets.PA_PASSWORD_13 }}
+          PA_LABEL_13:    ${{ secrets.PA_LABEL_13 }}
+
+          # ─── حساب #14 ────────────────────
+          PA_USERNAME_14: ${{ secrets.PA_USERNAME_14 }}
+          PA_PASSWORD_14: ${{ secrets.PA_PASSWORD_14 }}
+          PA_LABEL_14:    ${{ secrets.PA_LABEL_14 }}
+
+          # ─── حساب #15 ────────────────────
+          PA_USERNAME_15: ${{ secrets.PA_USERNAME_15 }}
+          PA_PASSWORD_15: ${{ secrets.PA_PASSWORD_15 }}
+          PA_LABEL_15:    ${{ secrets.PA_LABEL_15 }}
+
+          # ─── حساب #16 ────────────────────
+          PA_USERNAME_16: ${{ secrets.PA_USERNAME_16 }}
+          PA_PASSWORD_16: ${{ secrets.PA_PASSWORD_16 }}
+          PA_LABEL_16:    ${{ secrets.PA_LABEL_16 }}
+
+          # ─── حساب #17 ────────────────────
+          PA_USERNAME_17: ${{ secrets.PA_USERNAME_17 }}
+          PA_PASSWORD_17: ${{ secrets.PA_PASSWORD_17 }}
+          PA_LABEL_17:    ${{ secrets.PA_LABEL_17 }}
+
+          # ─── حساب #18 ────────────────────
+          PA_USERNAME_18: ${{ secrets.PA_USERNAME_18 }}
+          PA_PASSWORD_18: ${{ secrets.PA_PASSWORD_18 }}
+          PA_LABEL_18:    ${{ secrets.PA_LABEL_18 }}
+
+          # ─── حساب #19 ────────────────────
+          PA_USERNAME_19: ${{ secrets.PA_USERNAME_19 }}
+          PA_PASSWORD_19: ${{ secrets.PA_PASSWORD_19 }}
+          PA_LABEL_19:    ${{ secrets.PA_LABEL_19 }}
+
+          # ─── حساب #20 ────────────────────
+          PA_USERNAME_20: ${{ secrets.PA_USERNAME_20 }}
+          PA_PASSWORD_20: ${{ secrets.PA_PASSWORD_20 }}
+          PA_LABEL_20:    ${{ secrets.PA_LABEL_20 }}
+
+          MAX_WORKERS: "5"
+        run: python3 renew_python_anywhere.py
+
+      - name: Upload renewal report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: renewal-report-${{ github.run_id }}
+          path: |
+            renewal_report.json
+            renewal.log
+          retention-days: 30
+
+      - name: Log result (Success)
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          mkdir -p .github/logs
+          LOG=".github/logs/workflow_runs.log"
+          TS=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          {
+            echo "========================================"
+            echo "Workflow Run: $TS"
+            echo "Status: SUCCESS ✅"
+            echo "Trigger: ${{ github.event_name }}"
+            echo "Repository: ${{ github.repository }}"
+            echo "Branch: ${{ github.ref_name }}"
+            echo "Run ID: ${{ github.run_id }}"
+            echo "Run Number: ${{ github.run_number }}"
+            echo "========================================"
+            echo ""
+          } >> $LOG
+          git add $LOG
+          git commit -m "log: SUCCESS on $TS [run #${{ github.run_number }}]"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git push origin ${{ github.ref_name }}
+
+      - name: Log result (Failure)
+        if: failure()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          mkdir -p .github/logs
+          LOG=".github/logs/workflow_runs.log"
+          TS=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          {
+            echo "========================================"
+            echo "Workflow Run: $TS"
+            echo "Status: FAILED ❌"
+            echo "Trigger: ${{ github.event_name }}"
+            echo "Repository: ${{ github.repository }}"
+            echo "Branch: ${{ github.ref_name }}"
+            echo "Run ID: ${{ github.run_id }}"
+            echo "Run Number: ${{ github.run_number }}"
+            echo "Note: Check Actions tab for error details"
+            echo "========================================"
+            echo ""
+          } >> $LOG
+          git add $LOG
+          git commit -m "log: FAILED on $TS [run #${{ github.run_number }}]"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git push origin ${{ github.ref_name }}
